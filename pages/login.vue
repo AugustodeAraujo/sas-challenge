@@ -21,6 +21,7 @@
             type="email"
             required
             placeholder="Email"
+            @focus="resetFeedbackMessage"
           ></b-form-input>
           <b-form-invalid-feedback :state="emailState"
             >Please enter a valid email.</b-form-invalid-feedback
@@ -39,6 +40,7 @@
             autocomplete="off"
             required
             placeholder="Password"
+            @focus="resetFeedbackMessage"
           ></b-form-input>
           <b-form-invalid-feedback :state="passwordState"
             >Please enter a password.</b-form-invalid-feedback
@@ -52,18 +54,24 @@
             <span class="sr-only">Loading...</span>
           </div>
         </div>
+        <p v-if="feedback" class="text-center mt-2 text-danger">
+          {{ feedback }}
+        </p>
       </b-form>
     </div>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
   data() {
     return {
       email: '',
       password: '',
       spinner: false,
+      feedback: '',
     }
   },
   computed: {
@@ -83,6 +91,8 @@ export default {
     },
   },
   methods: {
+    ...mapMutations(['LOGIN_USER']),
+
     login() {
       const loginEndpoint = this.$config.login
       const payload = {
@@ -98,14 +108,32 @@ export default {
           .post(loginEndpoint, payload)
           .then((res) => {
             console.log(res)
+            const { data } = res
+            this.feedback = `${data.message} Redirecting...`
+
+            const mutationPayload = {
+              email: this.email,
+              token: data.data.result.access_token,
+            }
+
+            this.LOGIN_USER(mutationPayload)
+
+            setTimeout(() => {
+              this.$router.push('/admin')
+            }, 3000)
           })
           .catch((err) => {
             console.log(err)
+            this.feedback = 'Invalid email/password.'
           })
           .finally(() => {
             this.spinner = false
           })
       }
+    },
+
+    resetFeedbackMessage() {
+      this.feedback = ''
     },
   },
 }

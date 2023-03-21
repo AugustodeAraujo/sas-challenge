@@ -2,7 +2,7 @@
 export const state = () => ({
 
   user: {
-    
+
   }
 
 })
@@ -14,7 +14,10 @@ export const getters = {
 
 // Global Mutations
 export const mutations = {
-
+ LOGIN_USER: (state, payload) => {
+    state.user = payload
+    console.log('STATE_USER', state.user)
+  },
 }
 
 
