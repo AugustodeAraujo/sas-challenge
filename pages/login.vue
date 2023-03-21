@@ -93,7 +93,7 @@ export default {
   methods: {
     ...mapMutations(['LOGIN_USER']),
 
-    login() {
+    async login() {
       const loginEndpoint = this.$config.login
       const payload = {
         login: {
@@ -104,7 +104,7 @@ export default {
 
       if (this.emailState && this.passwordState) {
         this.spinner = true
-        this.$axios
+        await this.$axios
           .post(loginEndpoint, payload)
           .then((res) => {
             console.log(res)
