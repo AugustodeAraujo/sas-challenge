@@ -6,7 +6,12 @@
       @delete="deleteRule"
       @edit="editRuleModal"
     />
-    <b-modal v-model="modalShow" id="modal-eidt">
+    <b-modal
+      v-model="modalShow"
+      @hidden="resetModal"
+      @ok="editRule"
+      id="edit-modal"
+    >
       <b-form class="input-group mb-3" @submit.prevent="edit">
         <b-form-input
           v-model="toEdit.name"
@@ -113,8 +118,32 @@ export default {
 
     editRuleModal(value) {
       this.modalShow = true
-      this.toEdit = {...value}
+      this.toEdit = { ...value }
       console.log(value)
+    },
+
+    resetModal() {
+      this.toEdit = {}
+    },
+
+    async editRule(bvModalEvent) {
+      bvModalEvent.preventDefault()
+      console.log('handleOk', this.toEdit)
+
+      const editRuleEndpoint = `${this.$config.house}/${this.toEdit.id}`
+      const editRuleBody = {
+        house_rules: {
+          name: this.toEdit.name,
+          active: 1,
+        },
+      }
+
+      await this.$axios.$put(editRuleEndpoint, editRuleBody)
+      await this.getRuleList()
+
+      this.$nextTick(() => {
+        this.$bvModal.hide('edit-modal')
+      })
     },
 
     async deleteRule(value) {
