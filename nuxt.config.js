@@ -45,4 +45,13 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  publicRuntimeConfig: {
+
+    login: `${process.env.baseURL}/login_json`,
+    house: `${process.env.baseURL}/house_rules`
+
+
+
+  },
 }
