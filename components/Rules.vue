@@ -10,9 +10,21 @@
         <span id="rule">{{ rule.name }}</span>
 
         <div class="control">
-        <b-button class="" @click="deleteRule(rule.id)">Delete</b-button>
-        <b-button @click="editRule(rule)">Edit</b-button>
-      </div>
+          <b-button class="btn-color" @click="editRule(rule)">
+            <img
+            src="@/assets/images/edit.svg"
+              alt="Edit Icon"
+              class="icon"
+            />
+          </b-button>
+          <b-button class="" @click="deleteRule(rule.id)">
+            <img
+              src="@/assets/images/trash.svg"
+              alt="Trash Icon"
+              class="icon"
+            />
+          </b-button>
+        </div>
       </li>
     </ul>
 
@@ -21,8 +33,8 @@
         v-model="newRule"
         type="text"
         class="form-control"
-        placeholder="Recipient's username"
-        aria-label="Recipient's username"
+        placeholder="New rule..."
+        aria-label="New rule..."
         required
       />
 
@@ -91,6 +103,11 @@ ul {
   padding: 0;
 }
 
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
 .form {
   display: flex;
   justify-content: space-between;
@@ -140,6 +157,7 @@ ul {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
 }
 
 /* #rule::after {

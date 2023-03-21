@@ -107,7 +107,7 @@ export default {
         await this.$axios
           .post(loginEndpoint, payload)
           .then((res) => {
-            console.log(res)
+          
             const { data } = res
             this.feedback = `${data.message} Redirecting...`
 

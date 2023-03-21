@@ -7,26 +7,22 @@
       @edit="editRuleModal"
     />
     <b-modal
+      id="edit-modal"
       v-model="modalShow"
       @hidden="resetModal"
       @ok="editRule"
-      id="edit-modal"
     >
+    <h2>Edit rule</h2>
       <b-form class="input-group mb-3" @submit.prevent="edit">
         <b-form-input
           v-model="toEdit.name"
           type="text"
           class="form-control"
-          placeholder="Recipient's username"
-          aria-label="Recipient's username"
+          placeholder="Edit rule"
+          aria-label="Edit rule"
           required
         />
-
-        <div class="input-group-append">
-          <b-button class="btn-color" type="submit"> Edit rule </b-button>
-        </div>
       </b-form>
-      {{ toEdit }}
     </b-modal>
   </div>
 </template>
@@ -92,7 +88,6 @@ export default {
         .$get(rulesListEndpoint)
         .then((res) => {
           this.rulesList = res.data.entities
-          console.log(res)
         })
         .catch((err) => {
           console.log(err)
@@ -119,7 +114,6 @@ export default {
     editRuleModal(value) {
       this.modalShow = true
       this.toEdit = { ...value }
-      console.log(value)
     },
 
     resetModal() {
@@ -128,7 +122,6 @@ export default {
 
     async editRule(bvModalEvent) {
       bvModalEvent.preventDefault()
-      console.log('handleOk', this.toEdit)
 
       const editRuleEndpoint = `${this.$config.house}/${this.toEdit.id}`
       const editRuleBody = {
@@ -148,17 +141,14 @@ export default {
 
     async deleteRule(value) {
       const deleteRuleEndpoint = `${this.$config.house}/${value}`
-
       await this.$axios.$delete(deleteRuleEndpoint)
       await this.getRuleList()
-
-      console.log(deleteRuleEndpoint)
     },
   },
 }
 </script>
 
-<style  scoped>
+<style scoped>
 .my-container {
   display: flex;
   justify-content: center;
